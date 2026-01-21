@@ -1,0 +1,13 @@
+package pages
+
+import "echo_starter/view/layout"
+
+templ Index(name string) {
+	@layout.Base("Главная страница") {
+		<div class="text-center">
+			<h1>Привет, { name }!</h1>
+			<p class="font-bold">Это Главная страница.</p>
+		</div>
+		
+	}
+}

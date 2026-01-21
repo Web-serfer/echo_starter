@@ -1,0 +1,20 @@
+package header
+
+import (
+	"echo_starter/view/components/navbar"
+	"echo_starter/view/components/base"
+)
+
+templ Header() {
+  <header class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="logo">
+        <a href="/" class="text-xl font-bold">MyApp</a>
+      </div>
+      @navbar.Navbar()
+      <div class="auth-buttons">
+        @base.Button("Войти", "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded")
+      </div>
+    </div>
+  </header>
+}

@@ -1,0 +1,17 @@
+package pages
+
+import "echo_starter/view/layout"
+
+templ Contact() {
+	@layout.Base("Контакты") {
+		<div class="text-center">
+			<h1>Контакты</h1>
+			<p>Вы можете связаться с нами по следующим контактам:</p>
+			<div class="mt-4">
+				<p>Email: info@example.com</p>
+				<p>Телефон: +7 (XXX) XXX-XX-XX</p>
+				<p>Адрес: г. Город, ул. Улица, д. №</p>
+			</div>
+		</div>	
+	}
+}
