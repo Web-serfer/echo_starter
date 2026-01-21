@@ -1,0 +1,95 @@
+package services
+
+// Структура данных для услуги
+type Service struct {
+	Emoji       string
+	Title       string
+	Description string
+	ColorClass  string 
+}
+
+// Наши услуги (данные)
+var serviceList = []Service{
+	{
+		Emoji:       "⚡",
+		Title:       "Быстрая разработка",
+		Description: "Создаем высокопроизводительные приложения на Go. Минимальная задержка, максимальная скорость обработки запросов.",
+		ColorClass:  "bg-yellow-100 text-yellow-700",
+	},
+	{
+		Emoji:       "📱",
+		Title:       "Мобильная адаптация",
+		Description: "Ваш сайт будет идеально выглядеть на любом устройстве: от старого iPhone до широкоформатных мониторов.",
+		ColorClass:  "bg-blue-100 text-blue-700",
+	},
+	{
+		Emoji:       "🔒",
+		Title:       "Безопасность данных",
+		Description: "Внедряем современные протоколы шифрования и защиты. Ваши данные и данные ваших клиентов под надежным замком.",
+		ColorClass:  "bg-green-100 text-green-700",
+	},
+	{
+		Emoji:       "☁️",
+		Title:       "Облачные решения",
+		Description: "Помогаем с миграцией в облако (AWS, Google Cloud, Azure). Настраиваем Docker и Kubernetes для масштабируемости.",
+		ColorClass:  "bg-purple-100 text-purple-700",
+	},
+	{
+		Emoji:       "📊",
+		Title:       "Аналитика и SEO",
+		Description: "Интегрируем инструменты аналитики и оптимизируем структуру сайта для поисковых систем, чтобы вас находили.",
+		ColorClass:  "bg-pink-100 text-pink-700",
+	},
+	{
+		Emoji:       "🤝",
+		Title:       "Поддержка 24/7",
+		Description: "Не бросаем после запуска. Обеспечиваем техническую поддержку, обновления и мониторинг работоспособности.",
+		ColorClass:  "bg-indigo-100 text-indigo-700",
+	},
+}
+
+templ Services() {
+	<section class="py-20 bg-gray-50" id="services">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			
+			<!-- Заголовок секции -->
+			<div class="text-center max-w-3xl mx-auto mb-16">
+				<h2 class="text-base font-semibold text-blue-600 tracking-wide uppercase">Наши возможности</h2>
+				<p class="mt-2 text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+					Все, что нужно для запуска вашего бизнеса
+				</p>
+				<p class="mt-4 text-lg text-gray-500">
+					Мы берем на себя техническую часть, чтобы вы могли сосредоточиться на продукте и продажах.
+				</p>
+			</div>
+
+			<!-- Сетка карточек -->
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				for _, item := range serviceList {
+					<div class="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+						<!-- Иконка с цветным фоном -->
+						<div class={ "w-12 h-12 rounded-lg flex items-center justify-center text-2xl mb-6 transition-transform group-hover:scale-110 duration-300", item.ColorClass }>
+							{ item.Emoji }
+						</div>
+						
+						<h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
+							{ item.Title }
+						</h3>
+						
+						<p class="text-gray-500 leading-relaxed">
+							{ item.Description }
+						</p>
+
+						<!-- Ссылка "Подробнее" (декоративная) -->
+						<div class="mt-6 flex items-center text-blue-600 font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+							Подробнее 
+							<svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+							</svg>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+}

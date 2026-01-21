@@ -1,78 +1,50 @@
 package main
 
 import (
-	"context"
-	"net/http"
-	"strings"
-
 	"echo_starter/view/pages"
 
+	"github.com/a-h/templ"
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"
 )
 
 // Основная функция приложения
 func main() {
-	// Создаем новый экземпляр веб-фреймворка Echo
 	e := echo.New()
 
-	// Добавляем middleware для логирования входящих запросов
+	// 1. ВАЖНО: Recover восстанавливает сервер после паники
+	e.Use(middleware.Recover())
 	e.Use(middleware.RequestLogger())
 
-	// Добавляем статические файлы
 	e.Static("/static", "static")
 
-	// Определяем обработчик для главной страницы "/"
+	// Главная
 	e.GET("/", func(c *echo.Context) error {
-		// Создаем компонент index с параметрами
-		component := pages.Index("Гость")
-
-		// Создаем строковый билдер для рендеринга компонента
-		var sb strings.Builder
-		err := component.Render(context.Background(), &sb)
-		if err != nil {
-			return err
-		}
-
-		// Возвращаем результат как HTML
-		return c.HTML(http.StatusOK, sb.String())
+		// Используем хелпер (см. ниже)
+		return render(c, pages.Index("Гость"))
 	})
 
-	// Определяем обработчик для страницы "О нас"
+	// О нас
 	e.GET("/about", func(c *echo.Context) error {
-		// Создаем компонент about с параметрами
-		component := pages.About("About Page")
-
-		// Создаем строковый билдер для рендеринга компонента
-		var sb strings.Builder
-		err := component.Render(context.Background(), &sb)
-		if err != nil {
-			return err
-		}
-
-		// Возвращаем результат как HTML
-		return c.HTML(http.StatusOK, sb.String())
+		return render(c, pages.About("About Page"))
 	})
 
-	// Определяем обработчик для страницы "Контакты"
+	// Контакты
 	e.GET("/contact", func(c *echo.Context) error {
-		// Создаем компонент contact с параметрами
-		component := pages.Contact()
-
-		// Создаем строковый билдер для рендеринга компонента
-		var sb strings.Builder
-		err := component.Render(context.Background(), &sb)
-		if err != nil {
-			return err
-		}
-
-		// Возвращаем результат как HTML
-		return c.HTML(http.StatusOK, sb.String())
+		return render(c, pages.Contact())
 	})
 
-	// Запускаем сервер на порту 8080
-	// Если произойдет ошибка при запуске, выводим ее в лог
-	if err := e.Start(":8080"); err != nil {
+	// 2. ВАЖНО: Строгая привязка к IPv4
+	if err := e.Start("127.0.0.1:8080"); err != nil {
 		e.Logger.Error("failed to start server", "error", err)
 	}
+}
+
+// Хелпер для правильного рендеринга Templ в Echo
+func render(c *echo.Context, component templ.Component) error {
+	// 3. ВАЖНО: Явно задаем HTML, чтобы Air понимал, куда вставлять скрипт
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	// Рендерим сразу в Writer (быстрее и надежнее)
+	return component.Render(c.Request().Context(), c.Response())
 }

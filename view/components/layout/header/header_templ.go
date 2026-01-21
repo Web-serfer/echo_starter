@@ -10,8 +10,17 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"echo_starter/view/components/base"
-	"echo_starter/view/components/navbar"
+	"echo_starter/view/components/layout/header/navbar"
 )
+
+// Данные меню
+var menuItems = []navbar.MenuItem{
+	{Label: "Главная", URL: "/"},
+	{Label: "Возможности", URL: "/features"},
+	{Label: "Цены", URL: "/pricing"},
+	{Label: "О нас", URL: "/about"},
+	{Label: "Контакты", URL: "/contact"},
+}
 
 func Header() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -34,23 +43,63 @@ func Header() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header class=\"bg-gray-800 text-white p-4\"><div class=\"container mx-auto flex justify-between items-center\"><div class=\"logo\"><a href=\"/\" class=\"text-xl font-bold\">MyApp</a></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header class=\"fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300\" id=\"main-header\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\"><div class=\"flex justify-between items-center h-16\"><!-- 1. Логотип --><div class=\"flex-shrink-0 flex items-center gap-2 cursor-pointer\"><!-- Пример иконки логотипа --><div class=\"w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md\">M</div><a href=\"/\" class=\"text-xl font-bold text-gray-900 tracking-tight\">MyApp<span class=\"text-blue-600\">.</span></a></div><!-- 2. Центральная навигация (вставляем компонент) --><div class=\"hidden md:block\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = navbar.Navbar().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = navbar.Navbar(menuItems).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"auth-buttons\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><!-- 3. Кнопки справа (Auth) --><div class=\"hidden md:flex items-center gap-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = base.Button("Войти", "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded").Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = base.ButtonLink("Войти", "/login", base.VariantGhost).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></header>")
+		templ_7745c5c3_Err = base.ButtonLink("Регистрация", "/signup", base.VariantPrimary).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><!-- 4. Мобильная кнопка (Гамбургер) --><div class=\"md:hidden flex items-center\"><button id=\"mobile-menu-btn\" class=\"text-gray-500 hover:text-gray-700 focus:outline-none p-2\"><svg class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg></button></div></div></div><!-- 5. Мобильное выпадающее меню (скрыто по умолчанию) --><div id=\"mobile-menu\" class=\"hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-16 shadow-lg\"><div class=\"px-4 pt-2 pb-6 space-y-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, item := range menuItems {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<a href=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 templ.SafeURL
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(item.URL))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/layout/header/header.templ`, Line: 60, Col: 38}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(item.Label)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/layout/header/header.templ`, Line: 61, Col: 18}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</a>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div class=\"pt-4 mt-4 border-t border-gray-100 grid grid-cols-2 gap-3\"><a href=\"/login\" class=\"text-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50\">Войти</a> <a href=\"/signup\" class=\"text-center px-4 py-2 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700\">Регистрация</a></div></div></div></header><!-- Крошечный скрипт для работы мобильного меню (можно вынести в отдельный JS файл) --><script>\n\t\tdocument.addEventListener('DOMContentLoaded', () => {\n\t\t\tconst btn = document.getElementById('mobile-menu-btn');\n\t\t\tconst menu = document.getElementById('mobile-menu');\n\n\t\t\tif(btn && menu) {\n\t\t\t\tbtn.addEventListener('click', () => {\n\t\t\t\t\tmenu.classList.toggle('hidden');\n\t\t\t\t});\n\t\t\t}\n\t\t});\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

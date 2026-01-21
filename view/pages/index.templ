@@ -1,13 +1,17 @@
 package pages
 
-import "echo_starter/view/layout"
+import (
+	"echo_starter/view/layout"
+	"echo_starter/view/components/home/hero"
+	"echo_starter/view/components/home/logos"
+	"echo_starter/view/components/home/services"
+)
 
 templ Index(name string) {
-	@layout.Base("Главная страница") {
-		<div class="text-center">
-			<h1>Привет, { name }!</h1>
-			<p class="font-bold">Это Главная страница.</p>
-		</div>
-		
+	@layout.Base("Главная страница - LiveReload РАБОТАЕТ!") {
+		@hero.Hero()
+		@logos.Logos()
+		@services.Services()
 	}
 }
+

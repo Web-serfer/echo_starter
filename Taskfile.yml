@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  dev:
+    desc: Запуск сервера и прокси с live-reload
+    cmds:
+      - task: run-parallel
+
+  run-parallel:
+    # Task сам запустит их параллельно
+    deps: [air, templ]
+
+  air:
+    cmd: air
+    ignore_error: true
+
+  templ:
+    # Только генерация, никакой магии здесь
+    cmd: templ generate --watch

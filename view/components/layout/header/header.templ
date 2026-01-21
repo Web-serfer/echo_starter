@@ -1,20 +1,85 @@
 package header
 
 import (
-	"echo_starter/view/components/navbar"
+	"echo_starter/view/components/layout/header/navbar"
 	"echo_starter/view/components/base"
 )
 
+// Данные меню
+var menuItems = []navbar.MenuItem{
+	{Label: "Главная", URL: "/"},
+	{Label: "Возможности", URL: "/features"},
+	{Label: "Цены", URL: "/pricing"},
+	{Label: "О нас", URL: "/about"},
+	{Label: "Контакты", URL: "/contact"},
+}
+
 templ Header() {
-  <header class="bg-gray-800 text-white p-4">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="logo">
-        <a href="/" class="text-xl font-bold">MyApp</a>
-      </div>
-      @navbar.Navbar()
-      <div class="auth-buttons">
-        @base.Button("Войти", "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded")
-      </div>
-    </div>
-  </header>
+
+	<header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300" id="main-header">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="flex justify-between items-center h-16">
+
+				<!-- 1. Логотип -->
+				<div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
+					<!-- Пример иконки логотипа -->
+					<div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md">
+						M
+					</div>
+					<a href="/" class="text-xl font-bold text-gray-900 tracking-tight">
+						MyApp<span class="text-blue-600">.</span>
+					</a>
+				</div>
+
+				<!-- 2. Центральная навигация (вставляем компонент) -->
+				<div class="hidden md:block">
+					@navbar.Navbar(menuItems)
+				</div>
+
+				<!-- 3. Кнопки справа (Auth) -->
+				<div class="hidden md:flex items-center gap-3">
+					@base.ButtonLink("Войти", "/login", base.VariantGhost)
+					@base.ButtonLink("Регистрация", "/signup", base.VariantPrimary)
+				</div>
+
+				<!-- 4. Мобильная кнопка (Гамбургер) -->
+				<div class="md:hidden flex items-center">
+					<button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none p-2">
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- 5. Мобильное выпадающее меню (скрыто по умолчанию) -->
+		<div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 top-16 shadow-lg">
+			<div class="px-4 pt-2 pb-6 space-y-1">
+				for _, item := range menuItems {
+					<a href={ templ.SafeURL(item.URL) } class="block px-3 py-2 text-base font-medium text-gray-700 rounded-md hover:text-blue-600">
+						{ item.Label }
+					</a>
+				}
+				<div class="pt-4 mt-4 border-t border-gray-100 grid grid-cols-2 gap-3">
+					<a href="/login" class="text-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50">Войти</a>
+					<a href="/signup" class="text-center px-4 py-2 bg-blue-600 rounded-lg text-white font-medium hover:bg-blue-700">Регистрация</a>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<!-- Крошечный скрипт для работы мобильного меню (можно вынести в отдельный JS файл) -->
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const btn = document.getElementById('mobile-menu-btn');
+			const menu = document.getElementById('mobile-menu');
+
+			if(btn && menu) {
+				btn.addEventListener('click', () => {
+					menu.classList.toggle('hidden');
+				});
+			}
+		});
+	</script>
 }

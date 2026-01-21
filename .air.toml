@@ -2,24 +2,27 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  # Сначала запускаем генерацию шаблонов
-  pre_cmd = ["templ generate"]
-  # Затем собираем бинарный файл
   cmd = "go build -o ./tmp/main.exe ./cmd/app/main.go"
-  # Путь для запуска (с двойным слэшем для Windows)
   bin = "tmp\\main.exe"
   
-  delay = 500
-  include_ext = ["go", "templ", "html", "css"]
-  exclude_dir = ["tmp", "vendor", "static"]
-  # Игнорируем сгенерированные файлы, чтобы избежать бесконечного цикла
-  exclude_regex = ["_templ.go"]
+  # 2 секунды - это отличная задержка для Windows, чтобы templ успел всё записать
+  delay = 2000 
+  
+  # Air следит за этими расширениями
+  include_ext = ["go", "templ", "html", "css", "js"]
+  
+  exclude_dir = ["tmp", "vendor", "static", "node_modules"]
+  exclude_regex = ["_test.go"]
+  
+  # Настройки для стабильности процесса в Windows
+  send_interrupt = false
   stop_on_error = true
+  kill_delay = "1000ms"
 
-[color]
-  main = "magenta"
-  build = "yellow"
-  runner = "green"
-
-[misc]
-  clean_on_exit = true
+[proxy]
+  enabled = true
+  proxy_port = 7331
+  app_port = 8080
+  host = "127.0.0.1"
+  reload = true
+  app_start_timeout = 30000

@@ -1,7 +1,28 @@
 package base
 
-templ Button(text string, buttonClass string) {
-	<button class={ buttonClass }>
+// Типы кнопок для удобства
+type ButtonVariant string
+
+const (
+	VariantPrimary   ButtonVariant = "primary"
+	VariantSecondary ButtonVariant = "secondary"
+	VariantGhost     ButtonVariant = "ghost"
+)
+
+// PrimaryButton - красивая синяя кнопка (для призыва к действию)
+// SecondaryButton - серая/прозрачная кнопка (для "Войти" или "Отмена")
+
+templ ButtonLink(text string, href string, variant ButtonVariant) {
+	<a 
+		href={ templ.SafeURL(href) }
+		class={ 
+			"inline-flex items-center justify-center px-5 py-2 text-sm font-medium transition-all duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-1",
+			// Логика выбора классов в зависимости от варианта
+			templ.KV("bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 border border-transparent focus:ring-blue-500", variant == VariantPrimary),
+			templ.KV("bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-200", variant == VariantSecondary),
+			templ.KV("text-gray-600 hover:text-blue-600 hover:bg-blue-50", variant == VariantGhost),
+		}
+	>
 		{ text }
-	</button>
+	</a>
 }

@@ -8,3 +8,5 @@ require (
 )
 
 require golang.org/x/time v0.14.0 // indirect
+
+replace github.com/Web-serfer/echo_starter => .
