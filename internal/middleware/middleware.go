@@ -10,13 +10,21 @@ func CustomMiddleware() []echo.MiddlewareFunc {
 	return []echo.MiddlewareFunc{
 		// Логирование запросов
 		middleware.RequestLogger(),
-		
+
 		// Восстановление после паники
 		middleware.Recover(),
-		
-		// CORS
-		middleware.CORS(),
-		
+
+		// CORS с настройками
+		middleware.CORSWithConfig(middleware.CORSConfig{
+			AllowOrigins: []string{"*"}, // Разрешить все домены
+			AllowMethods: []string{
+				"GET", "POST", "PUT", "DELETE", "OPTIONS",
+			},
+			AllowHeaders: []string{
+				"Accept", "Authorization", "Content-Type", "X-CSRF-Token",
+			},
+		}),
+
 		// Заголовки безопасности
 		middleware.Secure(),
 	}
